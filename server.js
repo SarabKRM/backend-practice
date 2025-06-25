@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+// import cors from "cors";
 import "dotenv/config";
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
@@ -22,36 +22,15 @@ import categoryRouter from "./routes/categoryRoute.js";
 import reviewRouter from "./routes/reviewRoute.js";
 import backgroundVideoRouter from "./routes/backgroundVideoRoute.js";
 import carouselRouter from "./routes/carouselRoute.js";
-
 // App Config
 const app = express();
 const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
-// CORS Configuration ✅
-app.use(
-  cors({
-    origin: "http://localhost:5173", // replace with your frontend URL in production
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "token"],
-  })
-);
-
-// Optional: Manual CORS fallback (handles OPTIONS/preflight)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization, token"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  next();
-});
-
 // Middlewares
 app.use(express.json());
+// app.use(cors());
 
 // API Endpoints
 app.use("/api/user", userRouter);
@@ -65,7 +44,6 @@ app.use("/api/category", categoryRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/background_video", backgroundVideoRouter);
 app.use("/api/carousel", carouselRouter);
-
 // Serve videos statically
 app.use(
   "/uploads/videos",
